@@ -1,0 +1,4 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),L=require('./logic');
+test('original generation ranges and floor rule',()=>{for(let i=0;i<10000;i++){const t=L.trial();const min=Math.min(t.left_number,t.right_number);assert(min>=10&&min<=16);assert.equal(Math.max(t.left_number,t.right_number),Math.floor(min/t.ratio));}});
+test('timeout exclusion and original tolerance scoring',()=>{assert.equal(L.score([{left_number:10,right_number:15,response:'left',is_correct:0},{left_number:10,right_number:15,response:'right',is_correct:1},{left_number:10,right_number:15,response:'',is_correct:2}]),50);assert.equal(L.score([]),0);assert.equal(L.score([{left_number:10,right_number:11,response:'left',is_correct:0}]),100);});
+test('CSV escapes positions safely',()=>{assert(L.csv([{dot_positions:'{"x":1}'}]).includes('"{""x"":1}"'));});
